@@ -10,13 +10,11 @@ namespace Client_WebApp.Services
     public class InvoiceService
     {
         private readonly IInvoiceRepository _repository;
-        private readonly ISubContractorRepository _subContractorRepository;
         private readonly IProductRepository _productRepository;
 
-        public InvoiceService(IInvoiceRepository repository, ISubContractorRepository subContractorRepository, IProductRepository productRepository)
+        public InvoiceService(IInvoiceRepository repository, IProductRepository productRepository)
         {
             _repository = repository;
-            _subContractorRepository = subContractorRepository;
             _productRepository = productRepository;
         }
 
@@ -38,12 +36,6 @@ namespace Client_WebApp.Services
         public Task<List<InvoiceDetailsDto>> DeleteInvoiceAsync(int id, int updatedBy, int companyId)
         {
             return _repository.DeleteInvoiceAsync(id, updatedBy, companyId);
-        }
-
-        public Task<List<SubContractorDto>> GetAllSubContractorAsync(int companyId, int? id = null)
-        {
-            string? search = null;
-            return _subContractorRepository.GetSubContractorsAsync(id, search, companyId);
         }
 
         public Task<List<ProductDto>> GetProductsAsync(int companyId, int? id = null)

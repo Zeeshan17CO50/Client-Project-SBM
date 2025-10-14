@@ -2,6 +2,7 @@
 using Client_WebApp.Controllers;
 using Client_WebApp.Models;
 using Client_WebApp.Services;
+using Client_WebApp.Services.Master;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,10 +13,12 @@ namespace Client.MVC.Controllers
     public class InvoiceController : BaseController
     {
         private readonly InvoiceService _service;
+        private readonly SubContractorService _subContractorService;
 
-        public InvoiceController(InvoiceService service)
+        public InvoiceController(InvoiceService service, SubContractorService subContractorService)
         {
             _service = service;
+            _subContractorService = subContractorService;
         }
 
         public async Task<IActionResult> Index(string? searchText, DateTime? FromDate, DateTime? ToDate)
@@ -76,7 +79,7 @@ namespace Client.MVC.Controllers
             ViewData["ToDate"] = ToDate?.ToString("yyyy-MM-dd");
             ViewData["searchText"] = searchText;
 
-            var subcontractors = await _service.GetAllSubContractorAsync(companyId);
+            var subcontractors = await _subContractorService.GetAllSubContractorAsync(companyId);
             var products = await _service.GetProductsAsync(companyId);
             var subcontractorList = subcontractors.Select(s => new SelectListItem
             {
@@ -173,7 +176,7 @@ namespace Client.MVC.Controllers
             if (invoice == null) return NotFound();
 
             // Get all subcontractors and products for dropdown
-            var subcontractors = await _service.GetAllSubContractorAsync(companyId);
+            var subcontractors = await _subContractorService.GetAllSubContractorAsync(companyId);
             var products = await _service.GetProductsAsync(companyId);
 
             // Find IDs based on name

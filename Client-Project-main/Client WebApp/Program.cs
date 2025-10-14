@@ -4,6 +4,7 @@ using Client.Persistence.Context;
 using Client.Persistence.Repositories;
 using Client_WebApp.Middleware;
 using Client_WebApp.Services;
+using Client_WebApp.Services.Master;
 using Microsoft.Data.SqlClient;
 using MySqlConnector;
 using System.Data;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<BankService>();
+builder.Services.AddScoped<SubContractorService>();
 
 // IDbConnection
 builder.Services.AddScoped<IDbConnection>(sp =>
