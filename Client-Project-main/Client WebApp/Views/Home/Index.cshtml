@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    var role = ViewBag.UserRole as string;
+    bool hasReportAccess = role == "Super Admin" || role == "Admin" || role == "Manager" || role == "report_user";
+}
+
+<link rel="stylesheet" href="~/css/home.css" />
+<div id="home">
+    @if (hasReportAccess)
+    {
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <a asp-controller="Reports" asp-action="Paid">Paid Report <i class="fa-solid fa-file-zipper icon"></i></a>
+            </div>
+        </div>
+
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <a asp-controller="Reports" asp-action="Unpaid">Unpaid Report <i class="fa-solid fa-file-zipper icon"></i></a>
+            </div>
+        </div>
+
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <a asp-controller="Reports" asp-action="ProductWise">Product Wise Report <i class="fa-solid fa-file-zipper icon"></i></a>
+            </div>
+        </div>
+
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <a asp-controller="Reports" asp-action="SubContractorWise">Sub-Contractor Wise Report <i class="fa-solid fa-file-zipper icon"></i></a>
+            </div>
+        </div>
+
+        <div class="card m-3" style="width: 18rem;">
+            <div class="card-body">
+                <a asp-controller="Reports" asp-action="CombinedEntity">Combined Sub-Contractor Entity Report <i class="fa-solid fa-file-zipper icon"></i></a>
+            </div>
+        </div>
+    }
+</div>
