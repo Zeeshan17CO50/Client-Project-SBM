@@ -2,6 +2,7 @@
 using Client_WebApp.Controllers;
 using Client_WebApp.Models;
 using Client_WebApp.Services;
+using Client_WebApp.Services.Master;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;

@@ -1,9 +1,7 @@
 ﻿using Client.Application.Features.SubContractor.Dtos;
-using Client_WebApp.Models;
+using Client_WebApp.Models.Master;
 using Client_WebApp.Services.Master;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Client_WebApp.Controllers.Master
 {

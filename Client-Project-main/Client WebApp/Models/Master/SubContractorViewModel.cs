@@ -1,10 +1,10 @@
 ﻿using Client.Application.Features.SubContractor.Dtos;
 
-namespace Client_WebApp.Models
+namespace Client_WebApp.Models.Master
 {
     public class SubContractorViewModel
     {
-        public int CompanyId { get; set; } 
+        public int CompanyId { get; set; }
 
         public SubContractorDto SubContractor { get; set; }
         public List<SubContractorDto> SubContractors { get; set; }
@@ -15,11 +15,6 @@ namespace Client_WebApp.Models
             SubContractors = new List<SubContractorDto>();
         }
     }
-    //public class SubContractorViewModel
-    //{
-    //    public SubContractor SubContractor { get; set; }
-    //    public IEnumerable<SubContractor> SubContractors { get; set; }
-    //}
 
     public class SubContractor
     {

@@ -14,11 +14,13 @@ namespace Client.MVC.Controllers
     {
         private readonly InvoiceService _service;
         private readonly SubContractorService _subContractorService;
+        private readonly ProductService _productService;
 
-        public InvoiceController(InvoiceService service, SubContractorService subContractorService)
+        public InvoiceController(InvoiceService service, SubContractorService subContractorService, ProductService productService)
         {
             _service = service;
             _subContractorService = subContractorService;
+            _productService = productService;
         }
 
         public async Task<IActionResult> Index(string? searchText, DateTime? FromDate, DateTime? ToDate)
@@ -80,7 +82,7 @@ namespace Client.MVC.Controllers
             ViewData["searchText"] = searchText;
 
             var subcontractors = await _subContractorService.GetAllSubContractorAsync(companyId);
-            var products = await _service.GetProductsAsync(companyId);
+            var products = await _productService.GetProductsAsync(companyId);
             var subcontractorList = subcontractors.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
@@ -177,7 +179,7 @@ namespace Client.MVC.Controllers
 
             // Get all subcontractors and products for dropdown
             var subcontractors = await _subContractorService.GetAllSubContractorAsync(companyId);
-            var products = await _service.GetProductsAsync(companyId);
+            var products = await _productService.GetProductsAsync(companyId);
 
             // Find IDs based on name
             int subcontractorId = subcontractors.FirstOrDefault(s => s.Name == invoice.R_subcontractorName)?.Id ?? 0;
