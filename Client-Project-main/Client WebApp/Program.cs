@@ -26,6 +26,8 @@ builder.Services.AddScoped<ISubContractorRepository, SubContractorRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IBankMasterRepository, BankMasterRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<InvoiceService>();
@@ -33,13 +35,15 @@ builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<BankService>();
 builder.Services.AddScoped<SubContractorService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<RoleService>();
 
 // IDbConnection
 builder.Services.AddScoped<IDbConnection>(sp =>
     new MySqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// IEmailService (example)
+// IEmailService 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 // IJwtService
