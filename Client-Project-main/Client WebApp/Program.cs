@@ -1,6 +1,7 @@
 using Client.Application.Interfaces;
 using Client.Persistence.Repositories;
 using Client_WebApp.Services;
+using Client_WebApp.Services.Config;
 using Client_WebApp.Services.Master;
 using MySqlConnector;
 using System.Data;
@@ -28,6 +29,10 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IBankMasterRepository, BankMasterRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IAdditionalEntityRepository, AdditionalEntityRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleAccessRepository, RoleAccessRepository>();
 
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<InvoiceService>();
@@ -36,7 +41,10 @@ builder.Services.AddScoped<BankService>();
 builder.Services.AddScoped<SubContractorService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AdditionalEntityService>();
+builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<RoleAccessService>();
 
 // IDbConnection
 builder.Services.AddScoped<IDbConnection>(sp =>

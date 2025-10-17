@@ -1,6 +1,7 @@
 ﻿using Client.Application.Features.User.Dtos;
 using Client_WebApp.Models.Master;
 using Client_WebApp.Services;
+using Client_WebApp.Services.Config;
 using Client_WebApp.Services.Master;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace Client_WebApp.Controllers.Master
             {
                 var companyId = CurrentCompanyId;
                 var users = await _service.GetAllUsersAsync(companyId, null, searchText);
-                var roles = await _roleService.GetAllRolesAsync();
+                var roles = await _roleService.GetRoleAsync();
 
                 var viewModel = new UserViewModel
                 {

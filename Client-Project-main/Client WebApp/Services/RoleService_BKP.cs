@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Client_WebApp.Services
 {
-    public class RoleService
+    public class RoleService_BKP
     {
         private readonly IRoleRepository _repository;
 
-        public RoleService(IRoleRepository repository)
+        public RoleService_BKP(IRoleRepository repository)
         {
             _repository = repository;
         }

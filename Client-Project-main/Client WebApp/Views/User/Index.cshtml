@@ -222,5 +222,62 @@
             });
         }
     </script>
+
+     @* Partial View Script Validation script *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // Custom password validation rule
+            $.validator.addMethod("strongPassword", function (value, element) {
+                return this.optional(element)
+                    || /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@@#$%^&\-+=()])(?=\S+$).{4,10}$/.test(value);
+            }, "Password must have 1 capital, 1 small, 1 number, 1 special char, 4-10 chars.");
+
+            // Apply validation to the form
+            $("#userForm").validate({
+                rules: {
+                    RoleMasterId: {
+                        required: true
+                    },
+                    Username: {
+                        required: true
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    Password: {
+                        // Only validate if field is not empty (since it's "Add only")
+                        strongPassword: function () {
+                            return $("#Password").val().length > 0;
+                        }
+                    }
+                },
+                messages: {
+                    RoleMasterId: {
+                        required: "*Required"
+                    },
+                    Username: {
+                        required: "*Required"
+                    },
+                    Email: {
+                        required: "*Required",
+                        email: "Enter a valid email"
+                    }
+                },
+                errorClass: "text-danger",
+                errorElement: "span",
+                highlight: function (element) {
+                    $(element).addClass("is-invalid");
+                },
+                unhighlight: function (element) {
+                    $(element).removeClass("is-invalid");
+                }
+            });
+        });
+    </script>
 }
 

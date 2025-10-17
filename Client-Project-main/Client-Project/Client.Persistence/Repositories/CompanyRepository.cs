@@ -18,11 +18,11 @@ namespace Client.Persistence.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
-        private readonly AppDbContext _context;
+        //private readonly AppDbContext _context;
         private readonly IDbConnection _db;
-        public CompanyRepository(AppDbContext context, IDbConnection db)
+        public CompanyRepository(IDbConnection db)
         {
-            _context = context;
+            //_context = context;
             _db = db;
         }
 
