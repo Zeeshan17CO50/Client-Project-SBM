@@ -120,13 +120,14 @@
                                     id="togglePassword">
                                 <i class="bi bi-eye-slash"></i>
                             </button>
+                            <span asp-validation-for="Password" class="text-danger text-sm-start"></span>
                         </div>
-                        <span asp-validation-for="Password" class="text-danger text-sm-start"></span>
 
                         <!-- reCAPTCHA -->
-                        <div class="mb-3 text-center">
+                        <div class="mb-3">
                             <input type="hidden" asp-for="RecaptchaToken" id="recaptchaToken" />
-                            <div class="g-recaptcha" data-sitekey="@ViewBag.SiteKey"></div>
+                            <div class="g-recaptcha" data-sitekey="@ViewBag.SiteKey" data-callback="recaptchaCallback"></div>
+                            <span asp-validation-for="RecaptchaToken" class="text-danger ms-2 text-sm-start"></span>
                         </div>
 
                         <!-- Submit -->
@@ -157,15 +158,25 @@
         });
 
         // reCAPTCHA validation
+        var recaptchaValidation = $("span[data-valmsg-for='RecaptchaToken']");
+        
         document.getElementById("loginForm").addEventListener("submit", function (e) {
             var recaptchaResponse = grecaptcha.getResponse();
+
             if (recaptchaResponse.length === 0) {
                 e.preventDefault();
-                alert("Please complete the reCAPTCHA.");
+                // alert("Please complete the reCAPTCHA.");
+                recaptchaValidation.text("Please verify you are not a robot.");
             } else {
+                recaptchaValidation.text("");
                 document.getElementById("recaptchaToken").value = recaptchaResponse;
             }
         });
+
+        window.recaptchaCallback = function () {
+            recaptchaValidation.text("");
+            document.getElementById("recaptchaToken").value = grecaptcha.getResponse();
+        };
 
         // Eye icon toggle
         const togglePassword = document.getElementById('togglePassword');

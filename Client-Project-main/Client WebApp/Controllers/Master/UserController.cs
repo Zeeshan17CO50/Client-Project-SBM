@@ -1,4 +1,5 @@
 ﻿using Client.Application.Features.User.Dtos;
+using Client.Application.Interfaces;
 using Client_WebApp.Models.Master;
 using Client_WebApp.Services;
 using Client_WebApp.Services.Config;
@@ -152,6 +153,85 @@ namespace Client_WebApp.Controllers.Master
                 TempData["ErrorMessage"] = "Failed to update user status: " + ex.Message;
                 return Json(new { success = false, message = "Failed to update user status: " + ex.Message });
             }
+        }
+
+        [HttpGet]
+        public IActionResult ChangeUserPassword()
+        {
+            // Use currently logged-in user info
+            var model = new ChangePasswordViewModel
+            {
+                Id = CurrentUserId,
+                Username = CurrentUserName,
+                Email = CurrentUserEmail
+            };
+            return PartialView("_ChangePasswordPartial", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeUserPassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Please fill all required fields correctly.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                await _service.ChangePasswordAsync(new()
+                {
+                    Id = model.Id,
+                    Username = model.Username,
+                    CurrentPassword = model.CurrentPassword,
+                    NewPassword = model.NewPassword,
+                    Email = model.Email
+                });
+
+                TempData["SuccessMessage"] = "Password changed successfully! Please log in again.";
+
+                // Clear session or cookies (if applicable)
+                HttpContext.Session.Clear();
+
+                // Redirect to Logout (which will handle cleanup and redirect to login page)
+                return RedirectToAction("Logout", "Login");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Failed to change password. " + ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult SendEmail()
+        {
+            var model = new SendEmailViewModel();
+            return PartialView("_SendEmailPartial", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendEmail(SendEmailViewModel model, [FromServices] IEmailService emailService)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Please fill all required fields correctly.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                await emailService.SendEmailAsync(model.ToEmail, model.Subject, model.Body);
+                TempData["SuccessMessage"] = "Email sent successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Failed to send email. " + ex.Message;
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

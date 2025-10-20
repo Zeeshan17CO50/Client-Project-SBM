@@ -1,4 +1,6 @@
 using Client.Application.Interfaces;
+using Client.Domain.Models;
+using Client.Persistence;
 using Client.Persistence.Repositories;
 using Client_WebApp.Services;
 using Client_WebApp.Services.Config;
@@ -52,6 +54,8 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 );
 
 // IEmailService 
+builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 // IJwtService

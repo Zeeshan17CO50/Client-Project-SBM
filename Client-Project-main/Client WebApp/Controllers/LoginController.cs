@@ -55,7 +55,8 @@ namespace Client_WebApp.Controllers
         public IActionResult Logout()
         {
             _loginService.Logout();
-            TempData["SuccessMessage"] = "Logged out successfully!";
+            if (TempData["SuccessMessage"] == null)
+                TempData["SuccessMessage"] = "Logged out successfully!";
             return RedirectToAction("Index");
         }
     }
