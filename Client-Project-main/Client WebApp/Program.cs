@@ -5,6 +5,7 @@ using Client.Persistence.Repositories;
 using Client_WebApp.Services;
 using Client_WebApp.Services.Config;
 using Client_WebApp.Services.Master;
+using Client_WebApp.Services.Report;
 using MySqlConnector;
 using System.Data;
 
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IAdditionalEntityRepository, AdditionalEntityReposito
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleAccessRepository, RoleAccessRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<InvoiceService>();
@@ -47,6 +49,7 @@ builder.Services.AddScoped<AdditionalEntityService>();
 builder.Services.AddScoped<CompanyService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<RoleAccessService>();
+builder.Services.AddScoped<ReportService>();
 
 // IDbConnection
 builder.Services.AddScoped<IDbConnection>(sp =>
