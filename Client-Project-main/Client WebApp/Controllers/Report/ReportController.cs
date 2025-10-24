@@ -13,6 +13,51 @@ namespace Client_WebApp.Controllers.Reports
             _reportService = reportService;
         }
 
+        public async Task<IActionResult> Paid(string? fromDate, string? toDate, string? subcontractorName, string? bankName)
+        {
+            try
+            {
+                int? companyId = CurrentCompanyId;
+
+                var reports = await _reportService.GetPaidReportAsync(
+                    subcontractorName,
+                    companyId,
+                    bankName,
+                    fromDate,
+                    toDate
+                );
+
+                return View(reports);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Failed to load Paid Report: {ex.Message}";
+                return View(new List<PaidReportDto>());
+            }
+        }
+
+        public async Task<IActionResult> Unpaid(string? fromDate, string? toDate, string? subcontractorName)
+        {
+            try
+            {
+                int? companyId = CurrentCompanyId;
+
+                var reports = await _reportService.GetUnpaidReportAsync(
+                    subcontractorName,
+                    companyId,
+                    fromDate,
+                    toDate
+                );
+
+                return View(reports);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Failed to load Unpaid Report: {ex.Message}";
+                return View(new List<UnpaidReportDto>());
+            }
+        }
+
         public async Task<IActionResult> ProductWise(string? productName, string? subcontractorName, string? fromDate, string? toDate)
         {
             try
