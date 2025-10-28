@@ -14,7 +14,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<Content Remove="appsettings*.json" />
+	</ItemGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\Client.Application\Client.Application.csproj" />
     <ProjectReference Include="..\Client.Domain\Client.Domain.csproj" />
     <ProjectReference Include="..\Client.Persistence\Client.Persistence.csproj" />

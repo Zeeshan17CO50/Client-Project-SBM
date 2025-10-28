@@ -2,18 +2,35 @@ using Client.Application.Interfaces;
 using Client.Domain.Models;
 using Client.Persistence;
 using Client.Persistence.Repositories;
+using Client_WebApp.Middleware;
+using Client_WebApp.Models;
 using Client_WebApp.Services;
 using Client_WebApp.Services.Config;
 using Client_WebApp.Services.Master;
 using Client_WebApp.Services.Report;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MySqlConnector;
 using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add cookie authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home/Login";      // redirect if not logged in
+        options.AccessDeniedPath = "/Home/AccessDenied";  // redirect if no permission
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);   // optional
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorization();
+
+
+
 builder.Services.AddControllersWithViews();
 
-// Add session
+//// Add session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -21,6 +38,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+
 builder.Services.AddHttpContextAccessor();
 
 // Register repository and services
@@ -60,6 +79,8 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<GoogleReCaptchaConfig>(builder.Configuration.GetSection("GoogleReCaptcha"));
+
 
 // IJwtService
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -80,9 +101,10 @@ app.UseStaticFiles();
 
 app.UseSession();
 
-//app.UseMiddleware<AuthMiddleware>();
+app.UseMiddleware<AuthMiddleware>();
 
 app.UseRouting();
+app.UseAuthentication();  // must come before UseAuthorization
 
 app.UseAuthorization();
 
